@@ -8,8 +8,7 @@ import java.util.UUID;
 public interface GenericController {
     default URI generateHeaderLocation(UUID id){
         return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
+                .fromPath("http://localhost:8080/order/{id}")
                 .buildAndExpand(id)
                 .toUri();
     }

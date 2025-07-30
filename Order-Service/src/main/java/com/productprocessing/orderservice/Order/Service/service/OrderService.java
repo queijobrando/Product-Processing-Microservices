@@ -5,6 +5,7 @@ import com.productprocessing.orderservice.Order.Service.dto.neworder.OrderRespon
 import com.productprocessing.orderservice.Order.Service.dto.order.OrderResponseListDto;
 import com.productprocessing.orderservice.Order.Service.mapper.OrderMapper;
 import com.productprocessing.orderservice.Order.Service.model.Order;
+import com.productprocessing.orderservice.Order.Service.model.enun.Status;
 import com.productprocessing.orderservice.Order.Service.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,13 @@ public class OrderService {
     public List<OrderResponseListDto> getAllOrders(){
         List<Order> orders = orderRepository.findAll();
         return orderMapper.toList(orders);
+    }
+
+    public void setOrderStatus(UUID id, Status status){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Invalid or nonexistent order"));
+
+        order.setStatus(status);
     }
 
     public BigDecimal totalAmount(Order order){

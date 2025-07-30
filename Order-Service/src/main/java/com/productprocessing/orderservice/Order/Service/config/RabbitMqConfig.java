@@ -99,8 +99,8 @@ public class RabbitMqConfig {
 
     //Message converter
     @Bean
-    public MessageConverter jackson2JsonMessageConverter(ObjectMapper objectMapper){
-        return new Jackson2JsonMessageConverter(objectMapper);
+    public MessageConverter jackson2JsonMessageConverter(){
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
