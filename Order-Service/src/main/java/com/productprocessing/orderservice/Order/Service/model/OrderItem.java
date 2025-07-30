@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Embeddable
 @Getter
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 public class OrderItem {
 
     @Column(nullable = false)
-    private String productId;
+    private UUID productId;
 
     @Column(nullable = false)
     private String name;

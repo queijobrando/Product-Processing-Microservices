@@ -7,6 +7,7 @@ import com.productprocessing.orderservice.Order.Service.mapper.OrderMapper;
 import com.productprocessing.orderservice.Order.Service.model.Order;
 import com.productprocessing.orderservice.Order.Service.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class OrderService {
 
     @Autowired
@@ -24,12 +26,17 @@ public class OrderService {
     @Autowired
     public OrderMapper orderMapper;
 
+    @Autowired
+    public MessageRabbitMq messageRabbitMq;
+
     @Transactional
     public OrderResponseDto newOrder(OrderRequestDto dto){
         Order order = orderMapper.toEntity(dto);
         order.setTotalAmount(totalAmount(order));
 
         orderRepository.save(order);
+        message(order); // message
+
         return orderMapper.toDto(order);
     }
 
@@ -49,6 +56,16 @@ public class OrderService {
         return order.getItems().stream()
                 .map(i -> i.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public void message(Order order){
+        try {
+            messageRabbitMq.sendMessageNewOrder(orderMapper.toMessageDto(order));
+            log.info("Message delivered!");
+        } catch (RuntimeException e){
+            order.setIntegrated(false);
+            orderRepository.save(order);
+        }
     }
 
 }

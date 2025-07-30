@@ -39,6 +39,8 @@ public class Order {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    private boolean integrated;
+
     @ElementCollection
     @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
     private List<OrderItem> items;
@@ -47,6 +49,7 @@ public class Order {
     public void gerarCamposAutomaticos(){
         this.createdAt = LocalDateTime.now();
         this.status = Status.CREATED;
+        this.integrated = true;
     }
 
 }
