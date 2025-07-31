@@ -22,3 +22,5 @@ spring:
     port: 5672
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASS}
+server:
+  port: 8081

@@ -17,14 +17,12 @@ public class RabbitMqConfig {
 
     public static final String INVENTORY_RESERVED_QUEUE = "inventory-reserved.ms";
     public static final String INVENTORY_FAILED_QUEUE = "inventory-failed.ms";
-    public static final String PAYMENT_SUCCEED_QUEUE = "payment-succeed.ms";
-    public static final String PAYMENT_FAILED_QUEUE = "payment-failed.ms";
+    public static final String PAYMENT_STATUS_QUEUE = "payment-status.ms";
     public static final String ORDER_EXCHANGE = "order.exchange";
     public static final String ORDER_CREATED_RK = "order-created";
     public static final String INVENTORY_RESERVED_RK = "inventory-reserved";
     public static final String INVENTORY_FAILED_RK = "inventory-failed";
-    public static final String PAYMENT_SUCCEED_RK = "payment-succeed";
-    public static final String PAYMENT_FAILED_RK = "payment-failed";
+    public static final String PAYMENT_STATUS_RK = "payment-status";
     public static final String ORDER_CREATED_QUEUE = "order-created.ms";
 
     // Queues
@@ -44,13 +42,8 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Queue createPaymentSucceedQueue(){
-        return new Queue(PAYMENT_SUCCEED_QUEUE);
-    }
-
-    @Bean
-    public Queue createPaymentFailedQueue(){
-        return new Queue(PAYMENT_FAILED_QUEUE);
+    public Queue createPaymentStatusQueue(){
+        return new Queue(PAYMENT_STATUS_QUEUE);
     }
 
     //Exchange
@@ -85,19 +78,11 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Binding createPaymentFailedBind(){
+    public Binding createPaymentStatusBind(){
         return BindingBuilder
-                .bind(createPaymentFailedQueue())
+                .bind(createPaymentStatusQueue())
                 .to(createOrderExchange())
-                .with(PAYMENT_FAILED_RK);
-    }
-
-    @Bean
-    public Binding createPaymentSucceedBind(){
-        return BindingBuilder
-                .bind(createPaymentSucceedQueue())
-                .to(createOrderExchange())
-                .with(PAYMENT_SUCCEED_RK);
+                .with(PAYMENT_STATUS_RK);
     }
 
     // ADMIN para criar filas exchanges...
