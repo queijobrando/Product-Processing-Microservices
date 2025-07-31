@@ -19,4 +19,8 @@ public enum Status {
     public String toString() {
         return description;
     }
+
+    public String getName() {
+        return name();
+    }
 }

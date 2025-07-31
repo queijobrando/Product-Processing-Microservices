@@ -1,4 +1,4 @@
-package com.productprocessing.orderservice.Order.Service.dto.order;
+package com.inventory.service.Inventory.Service.dto.order;
 
 
 import java.util.List;

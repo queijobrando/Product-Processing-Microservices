@@ -53,11 +53,13 @@ public class OrderService {
         return orderMapper.toList(orders);
     }
 
-    public void setOrderStatus(UUID id, Status status){
+    public void setOrderStatus(UUID id, String statusString) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Invalid or nonexistent order"));
 
+        Status status = Status.valueOf(statusString);
         order.setStatus(status);
+        orderRepository.save(order);
     }
 
     public BigDecimal totalAmount(Order order){

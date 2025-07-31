@@ -26,6 +26,7 @@ public interface OrderMapper {
     List<OrderResponseListDto> toList(List<Order> orders);
 
     //Message
+    @Mapping(target = "status", expression = "java(order.getStatus().name())")
     OrderMessageDto toMessageDto(Order order);
 
 }

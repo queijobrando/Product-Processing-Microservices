@@ -25,8 +25,14 @@ public class RabbitMqConfig {
     public static final String INVENTORY_FAILED_RK = "inventory-failed";
     public static final String PAYMENT_SUCCEED_RK = "payment-succeed";
     public static final String PAYMENT_FAILED_RK = "payment-failed";
+    public static final String ORDER_CREATED_QUEUE = "order-created.ms";
 
     // Queues
+    @Bean
+    public Queue createOrderCreatedQueue(){
+        return new Queue(ORDER_CREATED_QUEUE);
+    }
+
     @Bean
     public Queue createInventoryReservedQueue(){
         return new Queue(INVENTORY_RESERVED_QUEUE);
@@ -51,6 +57,14 @@ public class RabbitMqConfig {
     @Bean
     public DirectExchange createOrderExchange(){
         return ExchangeBuilder.directExchange(ORDER_EXCHANGE).build();
+    }
+
+    @Bean
+    public Binding createOrderCreatedBind(){
+        return BindingBuilder
+                .bind(createOrderCreatedQueue())
+                .to(createOrderExchange())
+                .with(ORDER_CREATED_RK);
     }
 
     //Binds
