@@ -44,7 +44,7 @@ public class ProductService {
 
         if (items.isEmpty()) {
             log.warn("Order {} has no items", dto.id());
-            sendMessage(dto, Status.INVENTORY_FAILED.getName(), INVENTORY_FAILED_RK);
+            sendMessage(dto, Status.FAILED.getName(), INVENTORY_FAILED_RK);
             return;
         }
 
@@ -54,7 +54,7 @@ public class ProductService {
 
             if (item.quantity() > product.getQuantity()) {
                 log.error("Product quantity higher than stock");
-                sendMessage(dto, Status.INVENTORY_FAILED.getName(), INVENTORY_FAILED_RK);
+                sendMessage(dto, Status.OUT_OF_STOCK.getName(), INVENTORY_FAILED_RK);
                 return;
             }
 

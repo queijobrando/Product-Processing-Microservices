@@ -60,6 +60,7 @@ public class OrderService {
         Status status = Status.valueOf(statusString);
         order.setStatus(status);
         orderRepository.save(order);
+        log.info("Message received, setting order {} status {}", order.getId(), order.getStatus().getName());
     }
 
     public BigDecimal totalAmount(Order order){
