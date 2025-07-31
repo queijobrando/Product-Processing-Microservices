@@ -66,7 +66,7 @@ public class ProductService {
 
     public void sendMessage(OrderMessageDto dto, String status, String routingKey){
         OrderMessageDto orderMessage = new OrderMessageDto(
-                dto.id(), status, dto.items()
+                dto.id(), status, dto.totalAmount(), dto.items()
         );
         messageRabbitMq.sendMessageOrderStatus(orderMessage, routingKey);
         log.info("Sending order {} with status {}", dto.id(), status);
