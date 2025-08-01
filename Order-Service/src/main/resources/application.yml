@@ -2,10 +2,10 @@ spring:
   application:
     name: Order-Service
   datasource:
-    url: jdbc:h2:mem:order
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/orderdb
+    driver-class-name: org.postgresql.Driver
+    username: ${ORDER_DATASOURCE_USERNAME}
+    password: ${ORDER_DATASOURCE_PASSWORD}
   jpa:
     show-sql: false
     hibernate:
@@ -13,10 +13,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   rabbitmq:
     host: localhost
     port: 5672

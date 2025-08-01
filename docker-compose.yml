@@ -1,4 +1,56 @@
 services:
+
+  orderdb:
+    image: postgres:16
+    container_name: orderdb
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: ${ORDER_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${ORDER_DATASOURCE_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - product-network
+
+  inventorydb:
+    image: postgres:16
+    container_name: inventorydb
+    environment:
+      POSTGRES_DB: inventorydb
+      POSTGRES_USER: ${INVENTORY_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${INVENTORY_DATASOURCE_PASSWORD}
+    ports:
+      - "5433:5432"
+    networks:
+      - product-network
+
+  paymentdb:
+    image: postgres:16
+    container_name: paymentdb
+    environment:
+      POSTGRES_DB: paymentdb
+      POSTGRES_USER: ${PAYMENT_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${PAYMENT_DATASOURCE_PASSWORD}
+    ports:
+      - "5434:5432"
+    networks:
+      - product-network
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    ports:
+      - "15432:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    depends_on:
+      - orderdb
+      - inventorydb
+      - paymentdb
+    networks:
+      - product-network
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq_order
