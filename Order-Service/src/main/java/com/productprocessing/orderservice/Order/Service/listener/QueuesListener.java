@@ -7,8 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.productprocessing.orderservice.Order.Service.config.RabbitMqConfig.INVENTORY_FAILED_QUEUE;
-import static com.productprocessing.orderservice.Order.Service.config.RabbitMqConfig.INVENTORY_RESERVED_QUEUE;
+import static com.productprocessing.orderservice.Order.Service.config.RabbitMqConfig.*;
 
 @Component
 @Slf4j
@@ -17,8 +16,9 @@ public class QueuesListener {
     @Autowired
     public OrderService orderService;
 
-    @RabbitListener(queues = {INVENTORY_RESERVED_QUEUE, INVENTORY_FAILED_QUEUE})
+    @RabbitListener(queues = {INVENTORY_STATUS_ORDER_QUEUE, PAYMENT_STATUS_QUEUE})
     public void handleOrderMessage(OrderMessageDto dto){
+        log.info("Message received: Order:{}, status: {}", dto.id(), dto.status());
         orderService.setOrderStatus(dto.id(), dto.status());
     }
 

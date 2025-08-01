@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.inventory.service.Inventory.Service.config.RabbitMqConfig.INVENTORY_FAILED_RK;
-import static com.inventory.service.Inventory.Service.config.RabbitMqConfig.INVENTORY_RESERVED_RK;
-
 @Service
 @Slf4j
 public class ProductService {
@@ -44,7 +41,7 @@ public class ProductService {
 
         if (items.isEmpty()) {
             log.warn("Order {} has no items", dto.id());
-            sendMessage(dto, Status.FAILED.getName(), INVENTORY_FAILED_RK);
+            sendMessage(dto, Status.FAILED.getName());
             return;
         }
 
@@ -54,21 +51,21 @@ public class ProductService {
 
             if (item.quantity() > product.getQuantity()) {
                 log.error("Product quantity higher than stock");
-                sendMessage(dto, Status.OUT_OF_STOCK.getName(), INVENTORY_FAILED_RK);
+                sendMessage(dto, Status.OUT_OF_STOCK.getName());
                 return;
             }
 
             product.setQuantity(product.getQuantity() - item.quantity());
         }
 
-        sendMessage(dto, Status.INVENTORY_RESERVED.getName(), INVENTORY_RESERVED_RK);
+        sendMessage(dto, Status.PROCESSING_PAYMENT.getName());
     }
 
-    public void sendMessage(OrderMessageDto dto, String status, String routingKey){
+    public void sendMessage(OrderMessageDto dto, String status){
         OrderMessageDto orderMessage = new OrderMessageDto(
                 dto.id(), status, dto.totalAmount(), dto.items()
         );
-        messageRabbitMq.sendMessageOrderStatus(orderMessage, routingKey);
+        messageRabbitMq.sendMessageOrderStatus(orderMessage);
         log.info("Sending order {} with status {}", dto.id(), status);
     }
 }

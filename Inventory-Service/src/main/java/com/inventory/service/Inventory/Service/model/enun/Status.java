@@ -1,7 +1,7 @@
 package com.inventory.service.Inventory.Service.model.enun;
 
 public enum Status {
-    INVENTORY_RESERVED,
+    PROCESSING_PAYMENT,
     OUT_OF_STOCK,
     FAILED;
 

@@ -28,6 +28,9 @@ public class Payment {
     private Status status;
 
     @Column(nullable = false)
+    private UUID orderId;
+
+    @Column(nullable = false)
     private BigDecimal totalAmount;
 
     @Column(nullable = false)

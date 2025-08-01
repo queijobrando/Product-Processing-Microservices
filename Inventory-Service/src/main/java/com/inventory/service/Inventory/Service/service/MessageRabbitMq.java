@@ -5,6 +5,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.inventory.service.Inventory.Service.config.RabbitMqConfig.INVENTORY_STATUS_RK;
 import static com.inventory.service.Inventory.Service.config.RabbitMqConfig.ORDER_EXCHANGE;
 
 @Service
@@ -17,8 +18,8 @@ public class MessageRabbitMq {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessageOrderStatus(OrderMessageDto message, String routingKey){
-        rabbitTemplate.convertAndSend(ORDER_EXCHANGE, routingKey, message);
+    public void sendMessageOrderStatus(OrderMessageDto message){
+        rabbitTemplate.convertAndSend(ORDER_EXCHANGE, INVENTORY_STATUS_RK, message);
     }
 
 }

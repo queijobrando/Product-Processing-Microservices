@@ -15,13 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    public static final String INVENTORY_RESERVED_QUEUE = "inventory-reserved.ms";
-    public static final String INVENTORY_FAILED_QUEUE = "inventory-failed.ms";
+    public static final String INVENTORY_STATUS_ORDER_QUEUE = "inventory-status-order.ms";
+    public static final String INVENTORY_STATUS_PAYMENT_QUEUE = "inventory-status-payment.ms";
     public static final String PAYMENT_STATUS_QUEUE = "payment-status.ms";
     public static final String ORDER_EXCHANGE = "order.exchange";
     public static final String ORDER_CREATED_RK = "order-created";
-    public static final String INVENTORY_RESERVED_RK = "inventory-reserved";
-    public static final String INVENTORY_FAILED_RK = "inventory-failed";
+    public static final String INVENTORY_STATUS_RK = "inventory-status";
     public static final String PAYMENT_STATUS_RK = "payment-status";
     public static final String ORDER_CREATED_QUEUE = "order-created.ms";
 
@@ -32,13 +31,13 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Queue createInventoryReservedQueue(){
-        return new Queue(INVENTORY_RESERVED_QUEUE);
+    public Queue createInventoryStatusOrderQueue(){
+        return new Queue(INVENTORY_STATUS_ORDER_QUEUE);
     }
 
     @Bean
-    public Queue createInventoryFailedQueue(){
-        return new Queue(INVENTORY_FAILED_QUEUE);
+    public Queue createInventoryStatusPaymentQueue(){
+        return new Queue(INVENTORY_STATUS_PAYMENT_QUEUE);
     }
 
     @Bean
@@ -52,6 +51,7 @@ public class RabbitMqConfig {
         return ExchangeBuilder.directExchange(ORDER_EXCHANGE).build();
     }
 
+    //Binds
     @Bean
     public Binding createOrderCreatedBind(){
         return BindingBuilder
@@ -60,21 +60,20 @@ public class RabbitMqConfig {
                 .with(ORDER_CREATED_RK);
     }
 
-    //Binds
     @Bean
-    public Binding createInventoryReservedBind(){
+    public Binding createInventoryStatusOrderBind(){
         return BindingBuilder
-                .bind(createInventoryReservedQueue())
+                .bind(createInventoryStatusOrderQueue())
                 .to(createOrderExchange())
-                .with(INVENTORY_RESERVED_RK);
+                .with(INVENTORY_STATUS_RK);
     }
 
     @Bean
-    public Binding createInventoryFailedBind(){
+    public Binding createInventoryStatusPaymentBind(){
         return BindingBuilder
-                .bind(createInventoryFailedQueue())
+                .bind(createInventoryStatusPaymentQueue())
                 .to(createOrderExchange())
-                .with(INVENTORY_FAILED_RK);
+                .with(INVENTORY_STATUS_RK);
     }
 
     @Bean
