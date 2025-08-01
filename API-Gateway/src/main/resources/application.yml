@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: API-Gateway
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: ${ORDER_SERVICE_URI:http://localhost:8081}
+          predicates:
+            - Path=/order/**
+          filters:
+            - StripPrefix=1
+
+        - id: inventory-service
+          uri: ${INVENTORY_SERVICE_URI:http://localhost:8082}
+          predicates:
+            - Path=/product/**
+          filters:
+            - StripPrefix=1
+
+        - id: payment-service
+          uri: ${PAYMENT_SERVICE_URI:http://localhost:8083}
+          predicates:
+            - Path=/payment/**
+          filters:
+            - StripPrefix=1
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
