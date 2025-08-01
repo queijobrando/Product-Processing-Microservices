@@ -3,6 +3,7 @@ package com.inventory.service.Inventory.Service.service;
 import com.inventory.service.Inventory.Service.dto.order.OrderMessageDto;
 import com.inventory.service.Inventory.Service.dto.order.OrderMessageItems;
 import com.inventory.service.Inventory.Service.dto.product.ProductInfoDto;
+import com.inventory.service.Inventory.Service.dto.product.ProductRequestDto;
 import com.inventory.service.Inventory.Service.mapper.ProductMapper;
 import com.inventory.service.Inventory.Service.model.Product;
 import com.inventory.service.Inventory.Service.model.enun.Status;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -33,6 +35,20 @@ public class ProductService {
                .stream()
                .map(productMapper::toDto)
                .toList();
+    }
+
+    public ProductInfoDto getProduct(UUID id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Invalid or nonexistent product"));
+
+        return productMapper.toDto(product);
+    }
+
+    @Transactional
+    public ProductInfoDto newProduct(ProductRequestDto dto){
+        Product product = productMapper.toEntity(dto);
+        productRepository.save(product);
+        return productMapper.toDto(product);
     }
 
     @Transactional
