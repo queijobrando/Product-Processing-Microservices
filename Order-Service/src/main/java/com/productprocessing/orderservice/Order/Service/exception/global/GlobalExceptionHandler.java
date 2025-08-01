@@ -2,6 +2,7 @@ package com.productprocessing.orderservice.Order.Service.exception.global;
 
 import com.productprocessing.orderservice.Order.Service.dto.exception.ErrorAnswer;
 import com.productprocessing.orderservice.Order.Service.dto.exception.ErrorField;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Hidden
 @RestControllerAdvice
 public class GlobalExceptionHandler{
 
