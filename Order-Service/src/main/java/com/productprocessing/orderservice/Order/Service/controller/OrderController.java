@@ -25,7 +25,7 @@ public class OrderController implements GenericController {
 
     @Operation(
             summary = "Novo pedido",
-            description = "Gerar um novo pedido",
+            description = "Endpoint para gerar um novo pedido",
             tags = "Pedidos",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
@@ -63,12 +63,20 @@ public class OrderController implements GenericController {
         return ResponseEntity.created(location).body(order);
     }
 
+    @Operation(
+            summary = "Informações do Pedido",
+            description = "Retorna informações do pedido",
+            tags = "Pedidos")
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDto> getOrderInfo(@PathVariable UUID id){
         OrderResponseDto order = orderService.getOrder(id);
         return ResponseEntity.ok(order);
     }
 
+    @Operation(
+            summary = "Todos os Pedidos",
+            description = "Retorna todos os pedidos registrados",
+            tags = "Pedidos")
     @GetMapping
     public ResponseEntity<List<OrderResponseListDto>> getAllOrders(){
         List<OrderResponseListDto> orders = orderService.getAllOrders();
