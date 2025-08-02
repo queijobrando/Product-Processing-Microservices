@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/product")
 public class ProductController implements GenericController {
 
     @Autowired
     public ProductService productService;
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<ProductInfoDto> newProduct(@Valid @RequestBody ProductRequestDto dto){
         ProductInfoDto product = productService.newProduct(dto);
 
@@ -33,7 +33,7 @@ public class ProductController implements GenericController {
         return ResponseEntity.ok(productService.getProduct(id));
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<ProductInfoDto>> getAllProducts(){
         List<ProductInfoDto> products = productService.getAllProducts();
 

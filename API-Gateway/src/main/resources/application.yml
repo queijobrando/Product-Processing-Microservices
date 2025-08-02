@@ -1,30 +1,36 @@
 spring:
   application:
-    name: API-Gateway
+    name: api-gateway
   cloud:
     gateway:
-      routes:
-        - id: order-service
-          uri: ${ORDER_SERVICE_URI:http://localhost:8081}
-          predicates:
-            - Path=/order/**
-          filters:
-            - StripPrefix=1
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/order/**
+            - id: inventory-service
+              uri: lb://inventory-service
+              predicates:
+                - Path=/product/**
+            - id: payment-service
+              uri: lb://payment-service
+              predicates:
+                - Path=/payment/**
+    inetutils:
+      preferred-networks: 127.0.0.1
 
-        - id: inventory-service
-          uri: ${INVENTORY_SERVICE_URI:http://localhost:8082}
-          predicates:
-            - Path=/product/**
-          filters:
-            - StripPrefix=1
+server:
+  port: 8080
 
-        - id: payment-service
-          uri: ${PAYMENT_SERVICE_URI:http://localhost:8083}
-          predicates:
-            - Path=/payment/**
-          filters:
-            - StripPrefix=1
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty: DEBUG
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true

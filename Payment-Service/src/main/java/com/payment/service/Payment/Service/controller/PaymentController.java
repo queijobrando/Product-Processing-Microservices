@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("payment")
+@RequestMapping("/payment")
 public class PaymentController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPayment(id));
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<PaymentInfoDto>> getAllPayments(){
         List<PaymentInfoDto> payments = paymentService.getAllPayments();
 

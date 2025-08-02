@@ -36,9 +36,9 @@ services:
     networks:
       - product-network
 
-  pgadmin4:
+  pgadmin4order:
     image: dpage/pgadmin4
-    container_name: pgadmin4
+    container_name: pgadmin4order
     ports:
       - "15432:80"
     environment:

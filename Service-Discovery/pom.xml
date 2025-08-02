@@ -8,11 +8,11 @@
 		<version>3.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.apigateway</groupId>
-	<artifactId>API-Gateway</artifactId>
+	<groupId>com.service.discovery</groupId>
+	<artifactId>Service-Discovery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>API-Gateway</name>
-	<description>API Gateway for services</description>
+	<name>Service-Discovery</name>
+	<description>Eureka Service Discovery</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -33,21 +33,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

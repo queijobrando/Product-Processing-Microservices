@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("order")
+@RequestMapping("/order")
 public class OrderController implements GenericController {
 
     @Autowired
@@ -54,7 +54,7 @@ public class OrderController implements GenericController {
                         """
                                     )}))
     )
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<OrderResponseDto> newOrder(@Valid @RequestBody OrderRequestDto dto){
         OrderResponseDto order = orderService.newOrder(dto);
 
@@ -69,7 +69,7 @@ public class OrderController implements GenericController {
         return ResponseEntity.ok(order);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<OrderResponseListDto>> getAllOrders(){
         List<OrderResponseListDto> orders = orderService.getAllOrders();
 
