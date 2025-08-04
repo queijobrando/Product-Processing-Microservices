@@ -4,11 +4,11 @@ services:
     build: ./Order-Service
     container_name: order-service
     environment:
-      - SPRING_PROFILES_ACTIVE=${ORDER_SPRING_PROFILES_ACTIVE}
-      - ORDER_DATASOURCE_USERNAME=${ORDER_DATASOURCE_USERNAME}
-      - ORDER_DATASOURCE_PASSWORD=${ORDER_DATASOURCE_PASSWORD}
-      - ORDER_RABBITMQ_USER=${ORDER_RABBITMQ_USER}
-      - ORDER_RABBITMQ_PASSWORD=${ORDER_RABBITMQ_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
+      - ORDER_DATASOURCE_USERNAME=postgres
+      - ORDER_DATASOURCE_PASSWORD=postgres
+      - ORDER_RABBITMQ_USER=admin
+      - ORDER_RABBITMQ_PASSWORD=admin123
     depends_on:
       orderdb:
         condition: service_healthy
@@ -29,11 +29,11 @@ services:
     build: ./Inventory-Service
     container_name: inventory-service
     environment:
-      - SPRING_PROFILES_ACTIVE=${INVENTORY_SPRING_PROFILES_ACTIVE}
-      - INVENTORY_DATASOURCE_USERNAME=${INVENTORY_DATASOURCE_USERNAME}
-      - INVENTORY_DATASOURCE_PASSWORD=${INVENTORY_DATASOURCE_PASSWORD}
-      - INVENTORY_RABBITMQ_USER=${INVENTORY_RABBITMQ_USER}
-      - INVENTORY_RABBITMQ_PASSWORD=${INVENTORY_RABBITMQ_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
+      - INVENTORY_DATASOURCE_USERNAME=postgres
+      - INVENTORY_DATASOURCE_PASSWORD=postgres
+      - INVENTORY_RABBITMQ_USER=admin
+      - INVENTORY_RABBITMQ_PASSWORD=admin123
     depends_on:
       inventorydb:
         condition: service_healthy
@@ -56,11 +56,11 @@ services:
     build: ./Payment-Service
     container_name: payment-service
     environment:
-      - SPRING_PROFILES_ACTIVE=${PAYMENT_SPRING_PROFILES_ACTIVE}
-      - PAYMENT_DATASOURCE_USERNAME=${PAYMENT_DATASOURCE_USERNAME}
-      - PAYMENT_DATASOURCE_PASSWORD=${PAYMENT_DATASOURCE_PASSWORD}
-      - PAYMENT_RABBITMQ_USER=${PAYMENT_RABBITMQ_USER}
-      - PAYMENT_RABBITMQ_PASSWORD=${PAYMENT_RABBITMQ_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
+      - PAYMENT_DATASOURCE_USERNAME=postgres
+      - PAYMENT_DATASOURCE_PASSWORD=postgres
+      - PAYMENT_RABBITMQ_USER=admin
+      - PAYMENT_RABBITMQ_PASSWORD=admin123
     depends_on:
       paymentdb:
         condition: service_healthy
@@ -83,7 +83,7 @@ services:
     build: ./Service-Discovery
     container_name: service-discovery
     environment:
-      - SPRING_PROFILES_ACTIVE=${DISCOVERY_SPRING_PROFILES_ACTIVE}
+      - SPRING_PROFILES_ACTIVE=prod
     ports:
       - "8761:8761"
     networks:
@@ -99,7 +99,7 @@ services:
     build: ./API-Gateway
     container_name: api-gateway
     environment:
-      - SPRING_PROFILES_ACTIVE=${GATEWAY_SPRING_PROFILES_ACTIVE}
+      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
       order-service:
         condition: service_healthy
@@ -125,8 +125,8 @@ services:
     container_name: orderdb
     environment:
       POSTGRES_DB: orderdb
-      POSTGRES_USER: ${ORDER_DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${ORDER_DATASOURCE_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     networks:
@@ -142,8 +142,8 @@ services:
     container_name: inventorydb
     environment:
       POSTGRES_DB: inventorydb
-      POSTGRES_USER: ${INVENTORY_DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${INVENTORY_DATASOURCE_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
     networks:
@@ -159,8 +159,8 @@ services:
     container_name: paymentdb
     environment:
       POSTGRES_DB: paymentdb
-      POSTGRES_USER: ${PAYMENT_DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${PAYMENT_DATASOURCE_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5434:5432"
     networks:
@@ -177,8 +177,8 @@ services:
     ports:
       - "15432:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     depends_on:
       - orderdb
       - inventorydb
@@ -193,8 +193,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
     networks:
       - product-network
     healthcheck:
