@@ -1,9 +1,6 @@
 spring:
-  cloud:
-    inetutils:
-      preferred-networks: 127.0.0.1
   application:
-    name: Service-Discovery
+    name: service-discovery
 eureka:
   client:
     register-with-eureka: false
@@ -14,3 +11,11 @@ eureka:
     eviction-interval-timer-in-ms: 5000
 server:
   port: 8761
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always

@@ -1,22 +1,40 @@
+# application.yml (config geral)
 spring:
+  application:
+    name: payment-service
+server:
+  port: 8083
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+---
+#(perfil dev - H2)
+
+spring:
+  config:
+    activate:
+      on-profile: dev
   cloud:
     inetutils:
       preferred-networks:
-        - 127.0.0.1 #mudar depois
-  application:
-    name: payment-service
+        - 127.0.0.1
   datasource:
-    url: jdbc:postgresql://localhost:5434/paymentdb
-    driver-class-name: org.postgresql.Driver
-    username: ${PAYMENT_DATASOURCE_USERNAME}
-    password: ${PAYMENT_DATASOURCE_PASSWORD}
+    url: jdbc:h2:mem:payment
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
   jpa:
     show-sql: false
     hibernate:
       ddl-auto: update
-    defer-datasource-initialization: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
   sql:
     init:
@@ -24,13 +42,46 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
-    username: ${RABBITMQ_USER}
-    password: ${RABBITMQ_PASS}
+    username: admin
+    password: admin123
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
-server:
-  port: 8083
+
+---
+#(perfil prod - Postgres)
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://paymentdb:5432/paymentdb
+    driver-class-name: org.postgresql.Driver
+    username: ${PAYMENT_DATASOURCE_USERNAME}
+    password: ${PAYMENT_DATASOURCE_PASSWORD}
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  sql:
+    init:
+      mode: always
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: ${PAYMENT_RABBITMQ_USER}
+    password: ${PAYMENT_RABBITMQ_PASSWORD}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true

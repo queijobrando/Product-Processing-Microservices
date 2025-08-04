@@ -24,7 +24,7 @@ public class QueuesListener {
     public void inventoryStatus(OrderMessageDto dto){
         log.info("Message received: Order:{}, status: {}", dto.id(), dto.status());
 
-        if (Objects.equals(dto.status(), Status.OUT_OF_STOCK.name())){
+        if (Objects.equals(dto.status(), Status.OUT_OF_STOCK.name()) || Objects.equals(dto.status(), Status.FAILED.name()) ){
             log.error("Ignoring order: {}, status: {}", dto.id(), dto.status());
             return;
         }

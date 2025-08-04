@@ -1,2 +1,0 @@
-INSERT INTO products (id, name, price, quantity) VALUES ('b3f5e9c7-16ac-4a60-84b2-238c3e17e92e', 'Teclado Mecânico', 350.00, 50) ON CONFLICT (id) DO NOTHING;
-INSERT INTO products (id, name, price, quantity) VALUES ('2a9c1f32-46d7-41b4-a7a3-5c58a0ad0be1', 'Mouse Gamer', 150.00, 35) ON CONFLICT (id) DO NOTHING;

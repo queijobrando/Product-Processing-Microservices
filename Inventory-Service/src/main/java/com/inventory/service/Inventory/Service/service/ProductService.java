@@ -57,8 +57,7 @@ public class ProductService {
 
         if (items.isEmpty()) {
             log.warn("Order {} has no items", dto.id());
-            sendMessage(dto, Status.FAILED.getName());
-            return;
+            throw new IllegalArgumentException("Order has no items");
         }
 
         for (OrderMessageItems item : items) {
@@ -66,15 +65,11 @@ public class ProductService {
                     .orElseThrow(() -> new EntityNotFoundException("Invalid or nonexistent product"));
 
             if (item.quantity() > product.getQuantity()) {
-                log.error("Product quantity higher than stock");
-                sendMessage(dto, Status.OUT_OF_STOCK.getName());
-                return;
+                throw new IllegalStateException("Product quantity higher than stock");
             }
 
             product.setQuantity(product.getQuantity() - item.quantity());
         }
-
-        sendMessage(dto, Status.PROCESSING_PAYMENT.getName());
     }
 
     public void sendMessage(OrderMessageDto dto, String status){

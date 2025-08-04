@@ -1,12 +1,62 @@
+# application.yml (config geral)
 spring:
+  application:
+    name: order-service
+server:
+  port: 8081
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+---
+#(perfil dev - H2)
+
+spring:
+  config:
+    activate:
+      on-profile: dev
   cloud:
     inetutils:
       preferred-networks:
-        - 127.0.0.1 #mudar depois
-  application:
-    name: order-service
+        - 127.0.0.1
   datasource:
-    url: jdbc:postgresql://localhost:5432/orderdb
+    url: jdbc:h2:mem:product
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+---
+#(perfil prod - Postgres)
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://orderdb:5432/orderdb
     driver-class-name: org.postgresql.Driver
     username: ${ORDER_DATASOURCE_USERNAME}
     password: ${ORDER_DATASOURCE_PASSWORD}
@@ -16,17 +66,16 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
-    username: ${RABBITMQ_USER}
-    password: ${RABBITMQ_PASS}
+    username: ${ORDER_RABBITMQ_USER}
+    password: ${ORDER_RABBITMQ_PASSWORD}
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://service-discovery:8761/eureka
     fetch-registry: true
     register-with-eureka: true
-server:
-  port: 8081
