@@ -71,12 +71,4 @@ public class ProductService {
             product.setQuantity(product.getQuantity() - item.quantity());
         }
     }
-
-    public void sendMessage(OrderMessageDto dto, String status){
-        OrderMessageDto orderMessage = new OrderMessageDto(
-                dto.id(), status, dto.totalAmount(), dto.items()
-        );
-        messageRabbitMq.sendMessageOrderStatus(orderMessage);
-        log.info("Sending order {} with status {}", dto.id(), status);
-    }
 }

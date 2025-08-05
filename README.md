@@ -1,5 +1,7 @@
 # Microserviços - Processamento de Pedidos
 
+---
+
 ## 📋 Sobre:
 
 Este projeto faz parte do backend de um Sistema de Processamento de pedidos, que tem como o objetivo Simular um fluxo de compra em um e-commerce, onde cada etapa (pedido, estoque, pagamento, notificação) é realizada por microsserviços independentes que se comunicam de forma assíncrona via mensagens.
@@ -23,7 +25,7 @@ Este projeto faz parte do backend de um Sistema de Processamento de pedidos, que
 
 ## ⚙️ Como funciona:
 
-![Arquitetura Projeto](FrontEnd_Gerenciador_Funcionarios/src/assets/todos.png)
+![Arquitetura Projeto](arquitetura.png)
 
 ### Order Service:
 
